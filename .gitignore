@@ -3,7 +3,7 @@ node_modules/
 
 # Compiled output
 dist/
-build/
+
 
 # TypeScript cache
 *.tsbuildinfo
