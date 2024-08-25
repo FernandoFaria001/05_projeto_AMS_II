@@ -1,0 +1,14 @@
+<!-- src/views/items.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Items</title>
+</head>
+<body>
+  <h1>Items List</h1>
+  <ul>
+    <% items.forEach(item => { %>
+      <li><%= item.name %> - <%= item.description %></li>
+    <% }) %>
+  </ul>
+</body>

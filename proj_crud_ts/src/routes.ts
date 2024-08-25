@@ -1,29 +1,35 @@
-import { Router } from 'express';
-import mysql from 'mysql';
+import { Router, Request, Response } from 'express';
+import connection from './db'; // Importe a conexão
 
 const router = Router();
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '123456', // Substitua pela sua senha
-  database: 'ts_crud'
+// Rota para listar itens
+router.get('/items', async (req: Request, res: Response) => {
+  try {
+    const [rows] = await connection.query('SELECT * FROM items');
+    res.render('items', { items: rows });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-connection.connect();
+// Rota para adicionar um item
+router.post('/items', async (req: Request, res: Response) => {
+  try {
+    const { name, description } = req.body;
 
-// Example route for creating an item
-router.post('/item', (req, res) => {
-  const { name, description } = req.body;
-  connection.query('INSERT INTO items (name, description) VALUES (?, ?)', [name, description], (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(201).send(result);
-    }
-  });
+    // Insere o item no banco de dados
+    await connection.query(
+      'INSERT INTO items (name, description) VALUES (?, ?)',
+      [name || null, description || null] // Usa null se o nome ou descrição não forem fornecidos
+    );
+
+    res.redirect('/'); // Redireciona para a página inicial após a inserção
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
-
-// More CRUD routes...
 
 export default router;
