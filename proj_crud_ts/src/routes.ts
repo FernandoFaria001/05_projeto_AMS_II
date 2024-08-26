@@ -25,7 +25,7 @@ router.post('/items', async (req: Request, res: Response) => {
       [name || null, description || null] // Usa null se o nome ou descrição não forem fornecidos
     );
 
-    res.redirect('/'); // Redireciona para a página inicial após a inserção
+    res.redirect('/'); 
   } catch (error) {
     console.error('Database error:', error);
     res.status(500).send('Internal Server Error');
